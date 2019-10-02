@@ -4,19 +4,27 @@ public class Genie {
 
     protected int maxWishes;
     protected int remainingWishes;
-    protected boolean grantedWish;
 
     public Genie (int maxWishes) {
 
         this.maxWishes = maxWishes;
-        this.remainingWishes = this.maxWishes;
-        this.grantedWish = false;
+        this.remainingWishes = maxWishes;
     }
 
     public boolean grantWish () {
 
-        remainingWishes --;
-        grantedWish = true;
+        remainingWishes--;
         return true;
+    }
+
+    public boolean recycle() {
+        return false;
+    }
+
+    @Override
+    public String toString () {
+
+        return "Max wishes: " + maxWishes +
+                " Remaining wishes " + remainingWishes;
     }
 }

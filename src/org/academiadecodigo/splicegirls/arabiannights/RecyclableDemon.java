@@ -3,26 +3,36 @@ package org.academiadecodigo.splicegirls.arabiannights;
 public class RecyclableDemon extends Genie {
 
     private boolean isRecycled;
+    private int timesRecycled;
 
     public RecyclableDemon (int maxNumberWishes) {
         super(maxNumberWishes);
         this.isRecycled = false;
+        this.timesRecycled = 0;
     }
 
-    public boolean checkIsRecycled () {
-        return isRecycled;
-    }
-
-    public void recharge (MagicLamp magicLamp) {
-        isRecycled = true;
-        magicLamp.recycle(this);
+    @Override
+    public boolean recycle () {
+        if (!isRecycled && timesRecycled < 1) {
+            isRecycled = true;
+            timesRecycled++;
+            return true;
+        }
+        return super.recycle();
     }
 
     @Override
     public boolean grantWish() {
-        if (grantedWish || isRecycled) {
+        if (isRecycled) {
             return false;
         }
         return super.grantWish();
+    }
+
+    @Override
+    public String toString () {
+
+        return super.toString() +
+                "; Is recycled? " + (isRecycled ? " Yes. " : " No. ");
     }
 }

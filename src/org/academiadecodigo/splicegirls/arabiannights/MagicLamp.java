@@ -4,27 +4,34 @@ public class MagicLamp {
 
     private int capacity;
     private int remainingGenies;
-    private boolean mood; // true = friendly, false = grumpy
     private int timesRecharged;
 
     public MagicLamp (int capacity) {
 
         this.capacity = capacity;
         this.remainingGenies = capacity;
-        this.mood = true;
         this.timesRecharged = 0;
     }
 
-    public Genie release(int capacity) {
+    public Genie release(int maxWishes) {
 
-        Genie genie = (mood) ? new FriendlyGenie(capacity) : new GrumpyGenie(capacity);
-        remainingGenies--;
-        return genie;
+        if (remainingGenies % 2 == 0) {
+            remainingGenies--;
+            return new FriendlyGenie(maxWishes);
+        }
+        if (remainingGenies-- % 2 == 1) {
+            remainingGenies--;
+            return new GrumpyGenie(maxWishes);
+        }
+        if(remainingGenies <= 0) {
+            remainingGenies--;
+            return new RecyclableDemon(maxWishes);
+        }
+        return null;
     }
 
-    public void recycle (RecyclableDemon recyclableDemon) {
-
-        if (recyclableDemon.checkIsRecycled()) {
+    public void recharge (Genie recyclableDemon) {
+        if(recyclableDemon.recycle()) {
             remainingGenies++;
             timesRecharged++;
         }
@@ -49,5 +56,13 @@ public class MagicLamp {
 
         // Compare the data members and return accordingly
         return (this.capacity ==  c.capacity && this.remainingGenies == c.remainingGenies && this.timesRecharged == c.timesRecharged);
+    }
+
+    @Override
+    public String toString() {
+        return "Magic Lamp: " +
+                "Capacity: " + capacity +
+                "; Remaining Genies: " + remainingGenies +
+                "; Times recharged: " + timesRecharged;
     }
 }

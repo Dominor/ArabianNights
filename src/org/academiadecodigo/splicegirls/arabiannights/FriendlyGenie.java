@@ -10,7 +10,7 @@ public class FriendlyGenie extends Genie {
     @Override
     public boolean grantWish () {
 
-        if (grantedWish || remainingWishes <= 0) {
+        if (super.remainingWishes <= 0) {
             return false;
         }
         return super.grantWish();
