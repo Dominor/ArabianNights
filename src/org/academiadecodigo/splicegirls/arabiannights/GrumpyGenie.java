@@ -2,27 +2,21 @@ package org.academiadecodigo.splicegirls.arabiannights;
 
 public class GrumpyGenie extends Genie {
 
-    private boolean grantedWish;
-
     public GrumpyGenie (int maxNumberWishes) {
 
         super(maxNumberWishes);
-        this.grantedWish = false;
     }
 
     @Override
-    public boolean grantWish() {
-        if (grantedWish) {
-            return !grantedWish;
-        }
-        grantedWish = true;
-        return super.grantWish();
+    public boolean hasWishesLeft() {
+
+        return getGrantedWishes() == 0;
     }
 
     @Override
     public String toString () {
 
-        return super.toString() +
-                "; Granted wish already? " + ((grantedWish) ? " Yes. " : " No. ");
+        return "I am a Grumpy Genie " + super.toString() +
+                "; Granted wish? " + ((!hasWishesLeft()) ? " Yes. " : " No. ") + "\n";
     }
 }

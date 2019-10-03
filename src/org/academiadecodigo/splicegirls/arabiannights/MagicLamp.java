@@ -3,66 +3,74 @@ package org.academiadecodigo.splicegirls.arabiannights;
 public class MagicLamp {
 
     private int capacity;
-    private int remainingGenies;
+    private int rubs;
     private int timesRecharged;
 
     public MagicLamp (int capacity) {
 
         this.capacity = capacity;
-        this.remainingGenies = capacity;
-        this.timesRecharged = 0;
+        this.rubs = 0;
     }
 
-    public Genie release(int maxWishes) {
-
-        if (remainingGenies % 2 == 0) {
-            remainingGenies--;
-            return new FriendlyGenie(maxWishes);
-        }
-        if (remainingGenies-- % 2 == 1) {
-            remainingGenies--;
-            return new GrumpyGenie(maxWishes);
-        }
-        if(remainingGenies <= 0) {
-            remainingGenies--;
+    public Genie rub(int maxWishes) {
+        Genie genie = null;
+        if(getAvailableGenies() == 0) {
             return new RecyclableDemon(maxWishes);
         }
-        return null;
+        if (getAvailableGenies() % 2 == 0) {
+            genie = new FriendlyGenie(maxWishes);
+        } else {
+            genie = new GrumpyGenie(maxWishes);
+        }
+        rubs++;
+        return genie;
     }
 
-    public void recharge (Genie recyclableDemon) {
-        if(recyclableDemon.recycle()) {
-            remainingGenies++;
-            timesRecharged++;
+    public void recharge (Genie genie) {
+        if(!(genie instanceof RecyclableDemon)) {
+            return;
         }
+
+        // Safe cast because we use instanceof to check runtime type of Genie variable before making the cast
+        RecyclableDemon demon = (RecyclableDemon) genie;
+
+        if (demon.isRecycled()) {
+            return;
+        }
+
+        demon.recycle();
+        rubs--;
+        timesRecharged++;
+
     }
 
-    @Override
-    public boolean equals (Object o) {
+    public int getCapacity() {
+        return capacity;
+    }
 
-        // If the object is compared with itself then return true
-        if (o == this) {
-            return true;
-        }
+    public int getAvailableGenies() {
+        int availableGenies = getCapacity() - getRubs();
+        return (availableGenies >= 0) ? availableGenies : 0;
+    }
 
-        /* Check if o is an instance of Complex or not
-          "null instanceof [type]" also returns false */
-        if (!(o instanceof MagicLamp)) {
-            return false;
-        }
+    public int getRubs() {
+        return rubs;
+    }
 
-        // typecast o to MagicLamp so that we can compare data members
-        MagicLamp c = (MagicLamp) o;
+    public int getTimesRecharged() {
+        return timesRecharged;
+    }
 
-        // Compare the data members and return accordingly
-        return (this.capacity ==  c.capacity && this.remainingGenies == c.remainingGenies && this.timesRecharged == c.timesRecharged);
+    public boolean equals (MagicLamp lamp) {
+
+        return (this.getCapacity() ==  lamp.getCapacity() && this.getAvailableGenies() == lamp.getAvailableGenies() && this.getTimesRecharged() == lamp.getTimesRecharged());
     }
 
     @Override
     public String toString() {
         return "Magic Lamp: " +
-                "Capacity: " + capacity +
-                "; Remaining Genies: " + remainingGenies +
-                "; Times recharged: " + timesRecharged;
+                "Capacity: " + getCapacity() +
+                "; Available Genies: " + getAvailableGenies() +
+                "; Times recharged: " + getTimesRecharged();
     }
 }

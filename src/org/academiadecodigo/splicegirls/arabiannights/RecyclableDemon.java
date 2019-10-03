@@ -2,37 +2,30 @@ package org.academiadecodigo.splicegirls.arabiannights;
 
 public class RecyclableDemon extends Genie {
 
-    private boolean isRecycled;
-    private int timesRecycled;
+    private boolean recycled;
 
     public RecyclableDemon (int maxNumberWishes) {
         super(maxNumberWishes);
-        this.isRecycled = false;
-        this.timesRecycled = 0;
+        this.recycled = false;
+    }
+
+    public void recycle () {
+        recycled = true;
     }
 
     @Override
-    public boolean recycle () {
-        if (!isRecycled && timesRecycled < 1) {
-            isRecycled = true;
-            timesRecycled++;
-            return true;
-        }
-        return super.recycle();
+    public boolean hasWishesLeft() {
+        return !recycled;
     }
 
-    @Override
-    public boolean grantWish() {
-        if (isRecycled) {
-            return false;
-        }
-        return super.grantWish();
+    public boolean isRecycled() {
+        return recycled;
     }
 
     @Override
     public String toString () {
 
-        return super.toString() +
-                "; Is recycled? " + (isRecycled ? " Yes. " : " No. ");
+        return "I am a Demon " + super.toString() +
+                "; Is recycled? " + (recycled ? " Yes. " : " No. ") + "\n";
     }
 }

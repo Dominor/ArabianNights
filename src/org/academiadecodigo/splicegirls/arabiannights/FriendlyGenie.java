@@ -8,11 +8,13 @@ public class FriendlyGenie extends Genie {
     }
 
     @Override
-    public boolean grantWish () {
+    public boolean hasWishesLeft() {
+        return getRemainingWishes() > 0;
+    }
 
-        if (super.remainingWishes <= 0) {
-            return false;
-        }
-        return super.grantWish();
+    @Override
+    public String toString () {
+
+        return "I am a Friendly Genie " + super.toString() + "\n";
     }
 }
